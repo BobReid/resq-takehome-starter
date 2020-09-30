@@ -7,35 +7,40 @@ The scaffolding has been created docker and docker-compose
 
 ## Prerequisites
 
-Docker - [Download](https://www.docker.com/get-started)
+- [Docker & docker-compose](https://www.docker.com/get-started)
 
 ## Running Project
 
 ```shell
-$ docker-compose up
+$ ./app build
+$ ./app migrate
+$ ./app run
 ```
 
-The backend Django service will be accessible from localhost:8000
+The backend Django service is accessible from localhost:8000
 
-The frontend react dev server will be accessible from localhost:3000
+The frontend react dev server is accessible from localhost:3000
 
-## Stopping Project
+## Dependencies
+
+This project uses [Pipenv](https://pipenv.pypa.io/en/latest/) to manage python dependecies and
+[npm](https://www.npmjs.com/) to manage frontend dependencies. Dependencies are listed in
+backend/Pipfile and fronend/package.json respectively.
+
+The containers must be rebuilt after changing dependencies by running the following command
 
 ```shell
-$ docker-compose down
+$ ./app build
 ```
 
-## Rebuilding After Dependency Change
+## Running Management Commands In Backend
 
 ```shell
-$ docker-compose build
+$ ./app manage help
 ```
 
-## Running Commands In Backend
-
-To run commands in a docker container with the proper python environment loaded you must
-prepend '''pipenv run''' to the docker-compose run command
+## Running Arbirary Shell Commands in Backend
 
 ```shell
-$ docker-compose run backend pipenv run backend/manage.py show_urls
+$ ./app exec echo 'Hello World'
 ```

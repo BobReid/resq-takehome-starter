@@ -1,27 +1,27 @@
 version: "3.7"
 services:
   postgres:
-      image: postgres:9.6.11
-      command: postgres -c log_statement=all
-      volumes:
-          - postgres-data:/var/lib/postgresql/data
-      environment:
-          POSTGRES_USER: resq
-          POSTGRES_DB: resq
-      ports:
-          - "5432:5432"
+    image: postgres:9.6.11
+    command: postgres -c log_statement=all
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_USER: resq-takehome
+      POSTGRES_DB: resq-takehome
+      POSTGRES_HOST_AUTH_METHOD: trust
+    ports:
+      - "5432:5432"
   backend:
     build:
       context: backend/
     volumes:
       - ./backend:/code/backend/
+
     ports:
       - "127.0.0.1:8000:8000"
       - 4444:4444
-    environment:
-      DATABASE_USER: resq
-      DATABASE_NAME: resq
-      DATABASE_HOST: postgres
+    depends_on:
+      - postgres
     stdin_open: true
     tty: true
 
@@ -34,6 +34,7 @@ services:
       - "127.0.0.1:3000:3000"
     depends_on:
       - backend
+    stdin_open: true
 
 volumes:
   postgres-data:
